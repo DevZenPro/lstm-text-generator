@@ -1,1 +1,5 @@
-# lstm_text_generate
+# LSTM Text Generator
+LSTM recurrent neural network in TensorFlow that learns from Wikipedia text to generate new text.
+
+## Data
+I downloaded the data from https://metamind.io/research/the-wikitext-long-term-dependency-language-modeling-dataset/.
