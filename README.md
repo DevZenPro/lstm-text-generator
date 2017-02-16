@@ -3,3 +3,6 @@ LSTM recurrent neural network in TensorFlow that learns from Wikipedia text to g
 
 ## Data
 I downloaded the data from https://metamind.io/research/the-wikitext-long-term-dependency-language-modeling-dataset/.
+
+## Test Input
+A string of any number of characters.
