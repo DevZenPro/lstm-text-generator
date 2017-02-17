@@ -6,3 +6,6 @@ I downloaded the data from https://metamind.io/research/the-wikitext-long-term-d
 
 ## Test Input
 A string of any number of characters.
+
+## Test Output
+The test input string plus 500 generated characters.
