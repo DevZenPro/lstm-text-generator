@@ -3,7 +3,7 @@ import os
 import shutil
 from datetime import datetime, timedelta
 
-from train_log import *
+from .train_log import *
 
 
 class Config():
@@ -122,7 +122,7 @@ class LSTMTextGenerator(tf.Graph):
                 
                 if (step == 1) or (step % cnfg.generate_every == 0):  # See what current model generates
                     self.generate(test, cnfg.n_generate)
-                    print('Step {:,} ends @ {:%m/%d/%Y %H:%M:%S} [Logloss] {:.3f} [Accuracy] {:.1f}%'.format(step, datetime.now(), ll, accu))
+                    print('Step {:,} ends @ {:%m/%d/%Y %H:%M:%S} [Logloss] {:.3f} [Accuracy] {:.1f}%'.format(step, datetime.now(), ll, accu*100))
                     print('-' * 100)
                     print(test)
                     print('=' * 100)
