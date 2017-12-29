@@ -1,7 +1,7 @@
 # LSTM Text Generator
 
 ## What is it?
-Character-based LSTM Recurrent Neural Network that generates new text baseded on given Wikipedia text.
+Character-based LSTM Recurrent Neural Network that generates new text based on given Wikipedia text.
 
 ## Sample generated text after learning from about 150 musicians/bands' Wikipedia summaries linked to The Doors
 Hello Kitty is "Winht FoYoun"), In Babut Sus (deav" (the group' several Wout Sant. Frogres (Pannul, "Fordor ScontNigh", hnd Loz Not OBEV", 'n 1955) with R960). The band bass toured an 176 to a sriigncarst fears musical and progress band album and priguitarity work, single has the group 92 peofermed on their 1367 mentar Prase of alluer and 1975).
