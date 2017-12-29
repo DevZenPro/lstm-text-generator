@@ -1,0 +1,6 @@
+DONT_SHARE_lastfm_info.txt
+lastfm_api_key.txt
+
+__pycache__/
+ckp/
+logs/
