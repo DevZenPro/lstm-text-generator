@@ -41,3 +41,10 @@ def get_concat_summary(collection):
 
 def get_collection(artist):
     return db[get_collection_name(artist)]
+
+def print_collection_summary(collection):
+    print('# of Wikipedia summaries collected: {:,}'.format(collection.count()))
+    print('# of characters in all summaries: {:,}'.format(sum([len(info['summary']) for info in collection.find()])))
+    print()
+    print('Artists/bands: {}'.format([info['artist'] for info in collection.find()]))
+    
