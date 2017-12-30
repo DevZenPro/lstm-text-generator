@@ -16,20 +16,26 @@ def get_wikipedia_band_summary(what):
             try:
                 return wikipedia.page(what, auto_suggest=False).summary
             except:
-                return wikipedia.page(what + ' (band)').summary
+                try:
+                    return wikipedia.page(what + ' (band)').summary
+                except:
+                    return None
             
 def get_collection_name(artist):
     return artist.replace(' ', '_')
 
-def dump_wikipedia_summary_to_mongodb(artist, linked_artists):
+def dump_wikipedia_summary_to_mongodb(artist, linked_artists, annotate=True):
     collection = db[get_collection_name(artist)]  # Select collection
     collection.drop()  # Delete if exists
     
     for linked_artist in linked_artists:
         summary = get_wikipedia_band_summary(linked_artist)
+        if summary is None:
+            continue
         result = collection.insert_one({'artist': linked_artist, 
                                         'summary': summary})
-        print('Completed {}'.format(linked_artist))
+        if annotate:
+            print('Completed {}'.format(linked_artist))
         
     return collection
 

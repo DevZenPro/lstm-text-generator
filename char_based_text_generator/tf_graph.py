@@ -1,9 +1,9 @@
 import tensorflow as tf
+import pymongo
+from bson.decimal128 import Decimal128
 import os
 import shutil
 from datetime import datetime, timedelta
-
-from .train_log import *
 
 
 class Config():
@@ -95,21 +95,42 @@ class LSTMTextGenerator(tf.Graph):
             # Optimization
             self.optimizer = tf.train.GradientDescentOptimizer(cnfg.lr).minimize(self.logloss, global_step=global_step)
             
-    def train_model(self, cnfg, train, test):  # train and test are instances of Text class        
-        log = Log(cnfg)
+    def make_log_collection(self, name):
+        # Make MongoDB collection for logging
+        client = pymongo.MongoClient('mongodb://localhost:27017/')
+        db = client['lastfm_x_wikipedia']
+        collection = db[name]
+        collection.drop()  # Delete if exists
+        return collection
+    
+    def make_checkpoint_directory(self, ckp_dir):
+        if os.path.isdir(ckp_dir):
+            shutil.rmtree(ckp_dir)
+        os.makedirs(ckp_dir)
         
-        if os.path.isdir(cnfg.ckp_dir):
-            shutil.rmtree(cnfg.ckp_dir)
-        os.makedirs(cnfg.ckp_dir)
+        self.ckp_dir = ckp_dir
+
+    def print_progress(self, step, ll, accu, test):
+        print('Step {:,} ends @ {:%m/%d/%Y %H:%M:%S} [Logloss] {:.3f} [Accuracy] {:.1f}%'.format(step, datetime.now(), ll, accu*100))
+        print('-' * 98)
+        print(test)
+        print('=' * 98)
+
+    def save_model(self, step):
+        self.saver.save(self.sess, '/'.join([self.ckp_dir, 'model']), global_step=step)   
+        
+    def train_model(self, cnfg, train, test):  # train and test are instances of Text class        
+        coll = self.make_log_collection(cnfg.log_collection_name)
+        self.make_checkpoint_directory(cnfg.ckp_dir)  # Also set self.ckp_dir
         
         with tf.Session(graph=self) as self.sess: 
             tf.global_variables_initializer().run()
-            saver = tf.train.Saver()
+            self.saver = tf.train.Saver()
 
             for step in range(1, cnfg.max_step):
                 if step == 1:  # Only first time
                     print('Training starts @ {:%m/%d/%Y %H:%M:%S}'.format(datetime.now()))
-                    print('=' * 100)
+                    print('=' * 98)
                     
                     self.last_saved_time = datetime.now()
                     
@@ -118,21 +139,22 @@ class LSTMTextGenerator(tf.Graph):
                                             feed_dict={self.X: X_batch, self.Y: Y_batch, 
                                                        self.keep_prob: cnfg.dropout_keep_prob, 
                                                        self.is_training: True})
-                log.record(step, ll, accu)
+                log = {'step': step, 'logloss': Decimal128(str(ll)), 'accuracy': Decimal128(str(accu))}
                 
                 if (step == 1) or (step % cnfg.generate_every == 0):  # See what current model generates
-                    self.generate(test, cnfg.n_generate)
-                    print('Step {:,} ends @ {:%m/%d/%Y %H:%M:%S} [Logloss] {:.3f} [Accuracy] {:.1f}%'.format(step, datetime.now(), ll, accu*100))
-                    print('-' * 100)
-                    print(test)
-                    print('=' * 100)
+                    self.generate(test, cnfg.n_generate)                    
+                    self.print_progress(step, ll, accu, test)
+                    log['generated'] = test.in_str
                     test.reset()
                     
-                if datetime.now() > self.last_saved_time + timedelta(seconds=10*60):  # Save model every 10 min
-                    saver.save(self.sess, '/'.join([cnfg.ckp_dir, 'model']), global_step=step)
+                log['end time'] = datetime.now()
+                coll.insert_one(log) # Dump log to MongoDB collection
+                    
+                if datetime.now() > self.last_saved_time + timedelta(seconds=cnfg.save_model_every_n_min*60):
+                    self.save_model(step)
                     self.last_saved_time = datetime.now()
 
-            saver.save(self.sess, '/'.join([cnfg.ckp_dir, 'model']), global_step=step)
+            self.save_model(step)
             print('Training ends @ {:%m/%d/%Y %H:%M:%S}'.format(datetime.now()))  # The end
 
     def generate(self, test, n):
