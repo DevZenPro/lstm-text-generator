@@ -3,10 +3,12 @@
 ## What is it?
 Character-based LSTM Recurrent Neural Network that generates new text based on given Wikipedia text.
 
-## Sample generated text after learning from about 150 musicians/bands' Wikipedia summaries linked to The Doors
-Hello Kitty is "Winht FoYoun"), In Babut Sus (deav" (the group' several Wout Sant. Frogres (Pannul, "Fordor ScontNigh", hnd Loz Not OBEV", 'n 1955) with R960). The band bass toured an 176 to a sriigncarst fears musical and progress band album and priguitarity work, single has the group 92 peofermed on their 1367 mentar Prase of alluer and 1975).
+## Sample generated text after learning from about 500 musicians/bands' Wikipedia summaries linked to Queen
+Hello Kitty is a musician who of American Hand of The Earther first Hollewer, year. Sile  ith the Best Chart successful songwriting drummer Part Achhemine for elected and released singles, and is co-founded in 1965. The band was rated raving most of founding at the nine rewert record as a Genman uning the 1970s. The band ranked 52th the folling in the records, Continued of Ormorietth are United tiates and well as they also inducted into the Rock and Roll Hall of Fame and the US Guitar Hock. More were his rock apprance reanged (dosc influenced in number 11 on the Dixton. 37 years, the band began a solo career followed in 1999.
 
-He was inducted into the Rock and Roll Hall of Fame in 1965 in 2012, after Popoginy with vovalial success fentraff the British rock band member of Atros,720,690,632 various 13 million records was leaved havie several success with the Gurrest Goinng Wainces Calialor. In the single "Arnieg" ufiN In's was was an American rock band formed in 1967, the erreleased to Elrese fist singer and 1990s he which stilly he by was instrument on the fillion albums in performeltic before Counded the group's in 1968, "Vaughe (Hel Fastion (1973). Adian Brit Robirvielet Rock, with the lark up has aas Julo Bards, shew Playe through such scake the nivasional acCartncy Starn Bird Af
+Following other released the 1977 began 26 years. Yes based guitar style she albom "EPs of Rost and Avoneli (Deaclod (the most solo artists Gramam Nathers Their first album sold over 50 million copies worldwide.
+
+The leaders agann to Chomg Wimeough the deent6 and recording their material mase, his biggest hits including the hits "Ninets O' Rost The Heavy" (Bady", was also leff th
 
 ## Need:
 * Python 3.X
